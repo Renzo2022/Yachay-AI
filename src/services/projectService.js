@@ -72,3 +72,11 @@ export async function saveScreeningResults(projectId, screeningResults) {
     updatedAt: serverTimestamp(),
   });
 }
+
+export async function saveExtractionMatrix(projectId, matrix) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    extraction_matrix: matrix,
+    updatedAt: serverTimestamp(),
+  });
+}

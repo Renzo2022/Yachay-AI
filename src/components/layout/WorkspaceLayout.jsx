@@ -36,9 +36,11 @@ const phases = [
   },
   {
     key: 'phase-5',
-    label: 'Síntesis',
+    label: 'Extracción de datos',
     icon: Layers,
-    description: 'Narrativa y efectos',
+    description: 'Matrices + RAG',
+    available: true,
+    to: (projectId) => `/workspace/${projectId}/phase-5`,
   },
   {
     key: 'phase-6',

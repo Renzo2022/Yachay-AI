@@ -23,6 +23,14 @@ Responde SOLO con este JSON exacto:
   "reason": "Breve justificación en 1 frase"
 }`;
 
+const DEFAULT_EXTRACTION_FIELDS = [
+  'Tamaño de Muestra (n)',
+  'Edad Promedio',
+  'País',
+  'Metodología',
+  'Resultado Principal (p-value/effect size)',
+];
+
 async function callGroq(body) {
   const apiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (!apiKey) {
@@ -95,5 +103,45 @@ Resultado: ${picoCriteria.outcome ?? 'N/D'}`;
   } catch (error) {
     console.error('Respuesta de screening inválida', error);
     throw new Error('La IA devolvió un formato inesperado en el cribado.');
+  }
+}
+
+export const EXTRACTION_FIELDS = DEFAULT_EXTRACTION_FIELDS;
+
+export async function runExtractionAgent(paperText, fieldsToExtract = DEFAULT_EXTRACTION_FIELDS) {
+  const fields = fieldsToExtract?.length ? fieldsToExtract : DEFAULT_EXTRACTION_FIELDS;
+  const sanitizedText = (paperText ?? '').slice(0, 18000);
+  if (!sanitizedText) {
+    throw new Error('No se proporcionó texto del estudio para analizar.');
+  }
+
+  const userContent = `Campos a extraer:
+${fields.map((field) => `- ${field}`).join('\n')}
+
+Si un campo no aparece de forma explícita, responde "No reportado".
+
+Texto del estudio:
+${sanitizedText}`;
+
+  const content = await callGroq({
+    model: GROQ_MODEL,
+    temperature: 0.1,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'system',
+        content:
+          'Eres un analista de datos científicos. Lee el siguiente texto académico y extrae los campos solicitados. Si un dato no está claro, responde "No reportado". Devuelve únicamente JSON.',
+      },
+      { role: 'user', content: userContent },
+    ],
+  });
+
+  try {
+    const parsed = JSON.parse(content);
+    return parsed;
+  } catch (error) {
+    console.error('Respuesta de extracción inválida', error);
+    throw new Error('La IA devolvió un formato inesperado durante la extracción.');
   }
 }
