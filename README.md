@@ -74,6 +74,8 @@ VITE_FIREBASE_STORAGE_BUCKET=tu_storage_bucket
 VITE_FIREBASE_MESSAGING_SENDER_ID=tu_sender_id
 VITE_FIREBASE_APP_ID=tu_app_id
 VITE_GROQ_API_KEY=tu_api_key_groq
+VITE_SEMANTIC_SCHOLAR_API_KEY=tu_api_key_semantic
+VITE_PUBMED_API_KEY=tu_api_key_pubmed
 ```
 
 4. Ejecuta `npm run dev` y verifica que la autenticación funcione.
@@ -95,6 +97,16 @@ VITE_GROQ_API_KEY=tu_api_key_groq
   ```
 - **APIs:** `createProject`, `getUserProjects`, `deleteProject` en `src/services/projectService.js`.
 - **Contexto:** `ProjectContext` carga los proyectos del usuario autenticado y expone `selectProject` para rutas como `/workspace/:projectId`.
+
+### Servicio académico (Semantic Scholar + PubMed)
+
+- Archivo: `src/services/academicService.js`.
+- Dependencias: `VITE_SEMANTIC_SCHOLAR_API_KEY` y `VITE_PUBMED_API_KEY`.
+- Funciones:
+  - `searchSemanticScholar(query)`: usa `https://api.semanticscholar.org/graph/v1/paper/search` con campos avanzados y badge de Open Access.
+  - `searchPubMed(query)`: combina `esearch` + `esummary` para obtener metadatos completos.
+  - `searchAllSources(query)`: ejecuta ambas búsquedas en paralelo (Promise.allSettled), fusiona resultados y retorna `warnings` si alguna API falla.
+- La Fase 2 (`Phase2Page`) consume este servicio, permite seleccionar artículos y persiste la lista en `projects/{id}` (`candidates` array).
 
 ## Próximos pasos sugeridos
 

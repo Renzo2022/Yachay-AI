@@ -17,6 +17,8 @@ const phases = [
     label: 'Búsqueda',
     icon: Search,
     description: 'Motores + estrategia',
+    available: true,
+    to: (projectId) => `/workspace/${projectId}/phase-2`,
   },
   {
     key: 'phase-3',
