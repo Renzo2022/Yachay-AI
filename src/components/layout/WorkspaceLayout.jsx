@@ -24,7 +24,9 @@ const phases = [
     key: 'phase-3',
     label: 'Cribado',
     icon: Filter,
-    description: 'Screening y criterios',
+    description: 'Agente de cribado',
+    available: true,
+    to: (projectId) => `/workspace/${projectId}/phase-3`,
   },
   {
     key: 'phase-4',

@@ -9,6 +9,7 @@ import {
   deleteDoc,
   doc,
   updateDoc,
+  arrayUnion,
 } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 
@@ -44,6 +45,30 @@ export async function updateProject(projectId, data) {
   const projectRef = doc(db, 'projects', projectId);
   await updateDoc(projectRef, {
     ...data,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function updateProjectCandidates(projectId, candidates) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    candidates,
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function addIncludedStudy(projectId, paper) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    included_studies: arrayUnion(paper),
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function saveScreeningResults(projectId, screeningResults) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    screening_results: screeningResults,
     updatedAt: serverTimestamp(),
   });
 }

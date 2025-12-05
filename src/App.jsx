@@ -8,6 +8,7 @@ import LoginPage from './features/auth/LoginPage.jsx';
 import DashboardPage from './features/dashboard/DashboardPage.jsx';
 import Phase1Page from './features/phases/Phase1Page.jsx';
 import Phase2Page from './features/phases/Phase2Page.jsx';
+import Phase3Page from './features/phases/Phase3Page.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/workspace/:projectId" element={<Phase1Page />} />
                 <Route path="/workspace/:projectId/phase-1" element={<Phase1Page />} />
                 <Route path="/workspace/:projectId/phase-2" element={<Phase2Page />} />
+                <Route path="/workspace/:projectId/phase-3" element={<Phase3Page />} />
               </Route>
               <Route path="/app" element={<Navigate to="/dashboard" replace />} />
             </Route>
