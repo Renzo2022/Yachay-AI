@@ -44,15 +44,19 @@ const phases = [
   },
   {
     key: 'phase-6',
-    label: 'Redacción',
+    label: 'Síntesis',
     icon: PenLine,
-    description: 'Manuscrito académico',
+    description: 'Gráficos + discusión',
+    available: true,
+    to: (projectId) => `/workspace/${projectId}/phase-6`,
   },
   {
     key: 'phase-7',
-    label: 'Publicación',
+    label: 'Reporte final',
     icon: Upload,
-    description: 'Traducción y difusión',
+    description: 'Exportación DOCX',
+    available: true,
+    to: (projectId) => `/workspace/${projectId}/phase-7`,
   },
 ];
 

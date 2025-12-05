@@ -80,3 +80,11 @@ export async function saveExtractionMatrix(projectId, matrix) {
     updatedAt: serverTimestamp(),
   });
 }
+
+export async function saveDiscussionText(projectId, text) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    discussion_text: text,
+    updatedAt: serverTimestamp(),
+  });
+}

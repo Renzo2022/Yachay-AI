@@ -31,6 +31,9 @@ const DEFAULT_EXTRACTION_FIELDS = [
   'Resultado Principal (p-value/effect size)',
 ];
 
+const DISCUSSION_PROMPT =
+  'Actúa como un científico especializado en revisiones sistemáticas. Escribe una discusión académica de 3 párrafos sintetizando los hallazgos entregados. Identifica patrones, discrepancias y limitaciones.';
+
 async function callGroq(body) {
   const apiKey = import.meta.env.VITE_GROQ_API_KEY;
   if (!apiKey) {
@@ -144,4 +147,30 @@ ${sanitizedText}`;
     console.error('Respuesta de extracción inválida', error);
     throw new Error('La IA devolvió un formato inesperado durante la extracción.');
   }
+}
+
+export async function runDiscussionAgent(extractionMatrix = []) {
+  if (!Array.isArray(extractionMatrix) || extractionMatrix.length === 0) {
+    throw new Error('No hay datos suficientes para generar la discusión.');
+  }
+
+  const payload = extractionMatrix.map((entry) => ({
+    paperTitle: entry.paperTitle ?? entry.paper?.title ?? 'Sin título',
+    data: entry.data ?? {},
+    year: entry.year ?? entry.paper?.year ?? '',
+    country: entry.data?.['País'],
+    methodology: entry.data?.['Metodología'],
+    result: entry.data?.['Resultado Principal (p-value/effect size)'],
+  }));
+
+  const content = await callGroq({
+    model: GROQ_MODEL,
+    temperature: 0.3,
+    messages: [
+      { role: 'system', content: DISCUSSION_PROMPT },
+      { role: 'user', content: `Hallazgos estructurados: ${JSON.stringify(payload).slice(0, 12000)}` },
+    ],
+  });
+
+  return content.trim();
 }

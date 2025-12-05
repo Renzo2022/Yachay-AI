@@ -10,6 +10,8 @@ import Phase1Page from './features/phases/Phase1Page.jsx';
 import Phase2Page from './features/phases/Phase2Page.jsx';
 import Phase3Page from './features/phases/Phase3Page.jsx';
 import Phase5Page from './features/phases/Phase5Page.jsx';
+import Phase6Page from './features/phases/Phase6Page.jsx';
+import Phase7Page from './features/phases/Phase7Page.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
@@ -31,6 +33,8 @@ function App() {
                 <Route path="/workspace/:projectId/phase-2" element={<Phase2Page />} />
                 <Route path="/workspace/:projectId/phase-3" element={<Phase3Page />} />
                 <Route path="/workspace/:projectId/phase-5" element={<Phase5Page />} />
+                <Route path="/workspace/:projectId/phase-6" element={<Phase6Page />} />
+                <Route path="/workspace/:projectId/phase-7" element={<Phase7Page />} />
               </Route>
               <Route path="/app" element={<Navigate to="/dashboard" replace />} />
             </Route>
