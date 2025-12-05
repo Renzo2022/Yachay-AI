@@ -1,0 +1,41 @@
+:root {
+  --academic-noise: url('data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 160 160\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\' opacity=\'0.08\'/%3E%3C/svg%3E');
+}
+
+@layer base {
+  ::selection {
+    background: rgba(86, 99, 255, 0.35);
+    color: #f8fbff;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #050a18;
+    background-image:
+      linear-gradient(135deg, rgba(4, 8, 20, 0.95), rgba(8, 15, 35, 0.85)),
+      radial-gradient(circle at 20% 20%, rgba(86, 99, 255, 0.25), transparent 55%),
+      radial-gradient(circle at 80% 0%, rgba(245, 192, 109, 0.2), transparent 60%),
+      var(--academic-noise);
+    color: #f8fbff;
+    letter-spacing: 0.01em;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-glass-surface border border-glass-border/40 backdrop-blur-2xl shadow-glass rounded-glass;
+  }
+
+  .input-editorial {
+    @apply bg-transparent border border-glass-border/50 rounded-full px-4 py-2 font-body text-ink-strong placeholder:text-ink-muted focus:outline-none focus:ring-2 focus:ring-primary-indigo transition;
+  }
+}
