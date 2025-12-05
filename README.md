@@ -73,6 +73,7 @@ VITE_FIREBASE_PROJECT_ID=tu_project_id
 VITE_FIREBASE_STORAGE_BUCKET=tu_storage_bucket
 VITE_FIREBASE_MESSAGING_SENDER_ID=tu_sender_id
 VITE_FIREBASE_APP_ID=tu_app_id
+VITE_GROQ_API_KEY=tu_api_key_groq
 ```
 
 4. Ejecuta `npm run dev` y verifica que la autenticación funcione.

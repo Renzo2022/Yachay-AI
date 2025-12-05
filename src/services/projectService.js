@@ -8,6 +8,7 @@ import {
   getDocs,
   deleteDoc,
   doc,
+  updateDoc,
 } from 'firebase/firestore';
 import { db } from '../config/firebase.js';
 
@@ -37,4 +38,12 @@ export async function getUserProjects(userId) {
 export async function deleteProject(projectId) {
   const projectRef = doc(db, 'projects', projectId);
   await deleteDoc(projectRef);
+}
+
+export async function updateProject(projectId, data) {
+  const projectRef = doc(db, 'projects', projectId);
+  await updateDoc(projectRef, {
+    ...data,
+    updatedAt: serverTimestamp(),
+  });
 }

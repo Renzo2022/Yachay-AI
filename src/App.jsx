@@ -3,9 +3,10 @@ import { ThemeProvider } from './context/ThemeContext.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ProjectProvider } from './context/ProjectContext.jsx';
 import MainLayout from './components/layout/MainLayout.jsx';
+import WorkspaceLayout from './components/layout/WorkspaceLayout.jsx';
 import LoginPage from './features/auth/LoginPage.jsx';
 import DashboardPage from './features/dashboard/DashboardPage.jsx';
-import WorkspacePlaceholder from './features/dashboard/WorkspacePlaceholder.jsx';
+import Phase1Page from './features/phases/Phase1Page.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 import ProtectedRoute from './routes/ProtectedRoute.jsx';
 
@@ -20,7 +21,10 @@ function App() {
             <Route element={<ProtectedRoute />}>
               <Route element={<MainLayout />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
-                <Route path="/workspace/:projectId" element={<WorkspacePlaceholder />} />
+              </Route>
+              <Route element={<WorkspaceLayout />}>
+                <Route path="/workspace/:projectId" element={<Phase1Page />} />
+                <Route path="/workspace/:projectId/phase-1" element={<Phase1Page />} />
               </Route>
               <Route path="/app" element={<Navigate to="/dashboard" replace />} />
             </Route>
