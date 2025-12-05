@@ -1,5 +1,7 @@
+import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Home, Layers, NotebookPen, LogOut } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext.jsx';
 
 const navItems = [
   { to: '/app', label: 'Overview', icon: Home },
@@ -8,6 +10,24 @@ const navItems = [
 ];
 
 function Sidebar() {
+  const { currentUser, logout } = useAuth();
+
+  const initials = useMemo(() => {
+    if (!currentUser) return 'AA';
+    if (currentUser.displayName) {
+      return currentUser.displayName
+        .split(' ')
+        .slice(0, 2)
+        .map((word) => word[0])
+        .join('')
+        .toUpperCase();
+    }
+    if (currentUser.email) {
+      return currentUser.email.slice(0, 2).toUpperCase();
+    }
+    return 'AA';
+  }, [currentUser]);
+
   return (
     <aside className="flex h-screen w-72 flex-col gap-6 border-r border-white/5 bg-academic-bg/80 px-6 py-8">
       <div>
@@ -31,10 +51,24 @@ function Sidebar() {
           </NavLink>
         ))}
       </nav>
-      <button className="flex items-center gap-3 text-sm text-ink-muted transition hover:text-ink-strong">
-        <LogOut size={18} />
-        Cerrar sesión
-      </button>
+      <div className="mt-auto flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-indigo/30 text-lg font-semibold text-white">
+          {initials}
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-semibold text-white">
+            {currentUser?.displayName ?? 'Investigador'}
+          </p>
+          <p className="text-xs text-ink-muted line-clamp-1">{currentUser?.email ?? 'workspace@yachay.ai'}</p>
+        </div>
+        <button
+          className="rounded-full border border-white/10 p-2 text-ink-muted transition hover:text-ink-strong"
+          onClick={logout}
+          title="Cerrar sesión"
+        >
+          <LogOut size={16} />
+        </button>
+      </div>
     </aside>
   );
 }
