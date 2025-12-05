@@ -19,13 +19,13 @@ Plataforma SaaS para la gestión integral de Revisiones Sistemáticas de Literat
   /components
     /layout         # MainLayout, Sidebar, TopBar
     /ui             # Button, Card, Input (base)
-  /config           # Archivos de configuración (placeholder)
-  /context          # ThemeContext, AuthContext
+  /config           # Configs (firebase.js)
+  /context          # ThemeContext, AuthContext, ProjectContext
   /features         # auth, dashboard, phases (futuro)
   /hooks            # Hooks compartidos
-  /pages            # Login, Dashboard, NotFound
-  /routes           # Configuración adicional de rutas (placeholder)
-  /services         # Clients/API (placeholder)
+  /pages            # NotFound, otros auxiliares
+  /routes           # ProtectedRoute y helpers de enrutamiento
+  /services         # Clients/API -> Firestore services
   /styles           # globals.css + tema Academic Glass
   /utils            # Helpers reutilizables
 ```
@@ -77,9 +77,27 @@ VITE_FIREBASE_APP_ID=tu_app_id
 
 4. Ejecuta `npm run dev` y verifica que la autenticación funcione.
 
+### Servicio de proyectos (Firestore)
+
+- **Colección:** `projects`
+- **Estructura base:**
+  ```json
+  {
+    "title": "String",
+    "description": "String",
+    "status": "active | archived | completed",
+    "currentPhase": 1,
+    "userId": "usuario dueño",
+    "createdAt": "ServerTimestamp",
+    "updatedAt": "ServerTimestamp"
+  }
+  ```
+- **APIs:** `createProject`, `getUserProjects`, `deleteProject` en `src/services/projectService.js`.
+- **Contexto:** `ProjectContext` carga los proyectos del usuario autenticado y expone `selectProject` para rutas como `/workspace/:projectId`.
+
 ## Próximos pasos sugeridos
 
 1. Definir Theme tokens adicionales (spacing, estados) y paleta extendida.
-2. Implementar features de RSL conectando Firestore/Storage en `/features`.
-3. Agregar pruebas e2e/unidad para flujos críticos.
+2. Implementar el workspace por proyecto (phases, bitácoras) usando Firestore/Storage.
+3. Agregar pruebas e2e/unidad para flujos críticos (auth, creación/eliminación de proyectos).
 4. Integrar gestión de roles y auditoría de actividades dentro del dashboard.
